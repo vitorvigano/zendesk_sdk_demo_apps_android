@@ -14,6 +14,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
+        resValue("string", "channel_key", System.getenv("ZENDESK_MESSAGING_KEY"))
     }
 
     buildTypes {

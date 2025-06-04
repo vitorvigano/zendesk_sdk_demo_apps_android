@@ -11,7 +11,8 @@ class MainApplication : Application() {
         super.onCreate()
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/getting_started/#initialize-the-sdk
-        Zendesk.initialize(this, this.getString(R.string.channel_key), successCallback = { zendesk ->
+        val channelKey = getString(R.string.channel_key)
+        Zendesk.initialize(this, channelKey, successCallback = { zendesk ->
             Log.i(LOG_TAG, getString(R.string.msg_init_success))
         }, failureCallback = { error ->
             // Tracking the cause of exceptions in your crash reporting dashboard will help to triage any unexpected failures in production

@@ -79,7 +79,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun addConversationFields() {
         //https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#set-conversation-fields
-        val fields = mapOf("1234567890" to "value of the field")
+        val fields = mapOf(
+            "33873322513435" to "102.0",
+            "33373283674907" to "2025-05-26",
+            "30956706557211" to "00000031",
+            "30911273317531" to "OUT",
+            "33373250377755" to "Luz del Sur#Recibo de Luz",
+            "33890329406747" to "934583023",
+            "30956552071451" to "+51987485189"
+        )
         Zendesk.instance.messaging.setConversationFields(fields)
         coordinatorLayout?.let { layout ->
             Snackbar.make(layout, getString(R.string.msg_add_fields), Snackbar.LENGTH_LONG).show()
