@@ -36,12 +36,14 @@ class MainActivity : AppCompatActivity() {
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/getting_started/#show-the-conversation
         findViewById<Button>(R.id.StartButton).setOnClickListener {
+            addConversationFields()
+            addConversationTags()
             Zendesk.instance.messaging.showMessaging(this)
         }
 
         //https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#conversation-fields
         findViewById<Button>(R.id.MetadataAddFieldsButton).setOnClickListener {
-            addConversationFields()
+            //addConversationFields()
         }
         findViewById<Button>(R.id.MetadataClearFieldsButton).setOnClickListener {
             clearConversationFields()
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#conversation-tags
         findViewById<Button>(R.id.MetadataAddTagsButton).setOnClickListener {
-            addConversationTags()
+            //addConversationTags()
         }
         findViewById<Button>(R.id.MetadataClearTagsButton).setOnClickListener {
             clearConversationTags()
