@@ -2,9 +2,12 @@ package com.example.zendesk_sdk_metadata_demo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowCompat
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val LOG_TAG = "[${this.javaClass.name}]"
 
     private var coordinatorLayout: CoordinatorLayout? = null
+    private var token: String? = null
 
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,27 +40,61 @@ class MainActivity : AppCompatActivity() {
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/getting_started/#show-the-conversation
         findViewById<Button>(R.id.StartButton).setOnClickListener {
-            clearConversationTags()
-            clearConversationFields()
-            addConversationTags()
-            addConversationFields()
             Zendesk.instance.messaging.showMessaging(this)
         }
 
+        val loginButton = findViewById<Button>(R.id.LoginButton)
+        loginButton.setOnClickListener {
+            login()
+        }
+
+        val logoutButton = findViewById<Button>(R.id.LogoutButton)
+        findViewById<Button>(R.id.LogoutButton).setOnClickListener {
+            logout()
+        }
+
+        val tokenEditText = findViewById<EditText>(R.id.TokenEditText)
+        tokenEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+
+            }
+
+            override fun afterTextChanged(field: Editable?) {
+                token = field?.toString()
+                val hasText = !field.isNullOrBlank()
+                loginButton.isEnabled = hasText
+                logoutButton.isEnabled = hasText
+            }
+        })
+
         //https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#conversation-fields
         findViewById<Button>(R.id.MetadataAddFieldsButton).setOnClickListener {
-            //addConversationFields()
+            addConversationFields()
         }
         findViewById<Button>(R.id.MetadataClearFieldsButton).setOnClickListener {
-            //clearConversationFields()
+            clearConversationFields()
         }
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#conversation-tags
         findViewById<Button>(R.id.MetadataAddTagsButton).setOnClickListener {
-            //addConversationTags()
+            addConversationTags()
         }
         findViewById<Button>(R.id.MetadataClearTagsButton).setOnClickListener {
-            //clearConversationTags()
+            clearConversationTags()
         }
     }
 
@@ -80,6 +118,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     // SDK related methods
+
+    private fun login() {
+        token?.let {
+            Zendesk.instance.loginUser(it, {
+                showSnackBar("Login success")
+            }, {
+                showSnackBar("Login error")
+            })
+        }
+    }
+
+    private fun logout() {
+        Zendesk.instance.logoutUser({
+            showSnackBar("Logout success")
+        }, {
+            showSnackBar("Logout error")
+        })
+    }
 
     private fun addConversationFields() {
         //https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#set-conversation-fields
@@ -118,6 +174,12 @@ class MainActivity : AppCompatActivity() {
         Zendesk.instance.messaging.clearConversationTags()
         coordinatorLayout?.let { layout ->
             Snackbar.make(layout, getString(R.string.msg_clear_tags), Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showSnackBar(message: String) {
+        coordinatorLayout?.let { layout ->
+            Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show()
         }
     }
 }

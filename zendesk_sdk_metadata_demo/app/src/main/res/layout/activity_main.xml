@@ -43,6 +43,7 @@
             tools:context=".MainActivity">
 
             <include layout="@layout/initialize_cardview" />
+            <include layout="@layout/authentication_cardview" />
 
             <include layout="@layout/metadata_fields_cardview" />
             <include layout="@layout/metadata_tags_cardview" />
