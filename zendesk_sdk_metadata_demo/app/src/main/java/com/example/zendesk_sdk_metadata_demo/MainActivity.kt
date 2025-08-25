@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         // https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/getting_started/#show-the-conversation
         findViewById<Button>(R.id.StartButton).setOnClickListener {
+            clearConversationFields()
+            clearConversationTags()
+            addConversationFields()
+            addConversationTags()
             Zendesk.instance.messaging.showMessaging(this)
         }
 
@@ -153,6 +157,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(layout, getString(R.string.msg_add_fields), Snackbar.LENGTH_LONG).show()
         }
     }
+
     private fun clearConversationFields() {
         //https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/android/advanced_integration/#clear-conversation-fields
         Zendesk.instance.messaging.clearConversationFields()
